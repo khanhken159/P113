@@ -180,6 +180,19 @@ def main():
     with open(log_file, "a", encoding="utf-8") as f:
         f.write(json.dumps(entry, ensure_ascii=False) + "\n")
 
+    # Codex invokes this hook asynchronously, so submitting here does not
+    # delay the user's prompt. The uploader handles retries and retains logs
+    # locally if the server is temporarily unavailable.
+    if "--submit" in sys.argv:
+        submit_script = Path(__file__).with_name("submit_log.py")
+        subprocess.run(
+            [sys.executable, str(submit_script)],
+            stdin=subprocess.DEVNULL,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            check=False,
+        )
+
     # Output valid JSON (required by some tools like Gemini)
     print(json.dumps({"status": "logged"}))
 

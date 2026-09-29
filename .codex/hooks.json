@@ -1,26 +1,15 @@
 {
-  "version": "1.0",
+  "description": "Record and immediately submit Codex prompts to the AI20K AI-usage log.",
   "hooks": {
     "UserPromptSubmit": [
       {
         "hooks": [
           {
-            "name": "log-prompt",
             "type": "command",
-            "command": "bash scripts/_pyrun.sh scripts/log_hook.py --tool=codex",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "name": "log-stop",
-            "type": "command",
-            "command": "bash scripts/_pyrun.sh scripts/log_hook.py --tool=codex",
-            "timeout": 10
+            "command": "bash scripts/_pyrun.sh scripts/log_hook.py --tool=codex --submit",
+            "commandWindows": "venv\\Scripts\\python.exe scripts\\log_hook.py --tool=codex --submit",
+            "timeout": 15,
+            "async": true
           }
         ]
       }

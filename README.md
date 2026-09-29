@@ -1,26 +1,5 @@
 # AI20K Agent Template
 
-## Run the integrated FlowForge UI
-
-The local UI serves the Clarifier, Planner, SQL Coder, SQL Optimizer, Tester, Acceptance, and Review flow. It uses the OpenAI provider by default; Planner and SQL Coder call the configured LLM. Clarifier checks required facts before planning, and SQL Optimizer, Tester, Acceptance, and Review run deterministic checks. SQL Coder returns one DuckDB query; the local runner combines it with deterministic data preparation and then executes the complete pipeline.
-
-```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install -r requirements.txt
-python scripts/web_server.py
-```
-
-Open <http://127.0.0.1:8766/>. The port can be changed with `FLOWFORGE_UI_PORT`. To run the command-line pipeline, use `python scripts/run_pipeline.py --request "Gộp đơn hàng từ Shopee, Tiki và Website; chỉ giữ đơn hoàn tất; tính doanh thu theo ngày." --provider mock`.
-
-Set `OPENAI_API_KEY` in `.env` (copy `.env.example` first) before starting the UI. You can select a model with `OPENAI_MODEL` (default `gpt-4.1-mini`). For Gemini, set `FLOWFORGE_UI_PROVIDER=gemini` and `GEMINI_API_KEY`. Set `FLOWFORGE_UI_PROVIDER=mock` for offline deterministic runs. Provider credentials stay in the server process and are passed to the isolated pipeline process; they are never sent to the browser.
-
-For uploaded CSV revenue reports, Clarifier pauses before planning when the operation, order-status scope, input currency, output currency, conversion rate, missing amount, ambiguous number format, duplicate ID, or JOIN cardinality needs a decision. Answer the questions in the Agents screen and run again. Monetary strings such as `1.075.000` (VND), `1,075,000`, and `1,075.50` are parsed before SQL aggregation; different currencies require an explicit positive rate for each source or row. The result CSV includes a `currency` column. Requests to combine independent order files and report revenue for each file are planned as a row append grouped by source. Exact duplicate orders are counted once; conflicting rows require a chosen rule. For conflicting IDs across files, Clarifier also asks whether IDs are global or scoped to each file.
-
-To replay the uploaded CSV cases locally, run `python scripts/check_zip_cases.py C:/path/to/files.zip --check`. This checks 20 scenarios, including three in-memory variations of a batch file, without modifying the ZIP. To exercise the OpenAI code path without API calls, add `--provider openai --offline-llm`; this uses local responses for Clarifier, Planner, and SQL Coder, so it does not measure actual model output.
-
-To replay the multi-table, composite-key, orphan-SKU, inventory quantity, and mixed-date cases from `dim_store.zip`, run `python scripts/check_dim_store_cases.py C:/path/to/dim_store.zip --provider openai --check`. The ZIP remains at its original path; the runner places selected CSVs in isolated temporary workspaces. Use `--provider mock` for a no-API smoke test or `--offline-llm` to exercise provider routing with local stubs.
-
 Template chính thức cho học viên VinUni AI20K Build Phase: cấu trúc dự án, code
 mẫu và hướng dẫn kỹ thuật để xây dựng một AI Agent hoàn chỉnh — từ kiến trúc,
 code, test cho đến deploy và nộp bài Demo Day.
@@ -213,5 +192,3 @@ Báo lỗ hổng bảo mật theo [SECURITY.md](SECURITY.md), đừng mở publi
 ## License
 
 [MIT](LICENSE) — dùng tự do cho mục đích giáo dục.
-#   P 1 1 3  
- 

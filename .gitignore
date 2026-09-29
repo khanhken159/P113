@@ -58,3 +58,12 @@ out/
 # AI logs — tracked structure, ignored content
 .ai-log/*.jsonl
 .ai-log/archive/
+
+# FlowForge run outputs
+/generated/
+/output/
+/agents/generated/
+
+# Uploaded source copies; integrated code lives in the repository layout
+/optimizer_code_bundle/
+/vu-dinh-thu-app/

@@ -78,7 +78,11 @@ def main():
 
     # Atomic rename closes the race window: hook writes that arrive after this
     # land in a fresh LOG_FILE, not in the batch we're about to POST.
-    pending = LOG_FILE.with_name(f"session.pending.{int(time.time())}.jsonl")
+    # Multiple Codex hooks may submit concurrently. A unique pending name
+    # prevents them from colliding while atomically rotating the live log.
+    pending = LOG_FILE.with_name(
+        f"session.pending.{time.time_ns()}.{os.getpid()}.jsonl"
+    )
     try:
         LOG_FILE.rename(pending)
     except FileNotFoundError:

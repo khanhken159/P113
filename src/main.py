@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from src.api.routes import router
+from src.api.sandbox import router as sandbox_router
 from src.config import get_settings
 
 
@@ -32,6 +33,7 @@ app.add_middleware(
 )
 
 app.include_router(router, prefix="/api/v1")
+app.include_router(sandbox_router, prefix="/api/v1")
 
 
 @app.get("/health")
