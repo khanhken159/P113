@@ -1,0 +1,31 @@
+sandbox:
+  path: data/sandbox.duckdb
+  threads: 4
+timing:
+  warmup_runs: 1
+  measured_runs: 5
+detect:
+  slow_threshold_s: 1.0
+  large_scan_rows: 5000000
+compare:
+  rel_tol: 1.0e-6
+  abs_tol: 1.0e-12
+optimize:
+  max_candidates: 3
+  min_speedup: 1.1
+  use_llm: false
+  candidate_timeout_factor: 3
+  candidate_timeout_min_s: 30
+  physical: auto
+llm:
+  model: gpt-4o-mini
+  temperature: 0.2
+tpch:
+  scale_factor: 1
+  slow_dir: datasets/tpch/slow
+eltbench:
+  databases: []
+  repo_dir: data/external/ELT-Bench-Verified
+  raw_dir: data/external/eltbench_raw
+  models_dir: datasets/eltbench/models
+reports_dir: reports
